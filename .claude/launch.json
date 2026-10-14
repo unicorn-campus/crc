@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "sql-retriever-api",
+      "runtimeExecutable": "sql-retriever/.venv/Scripts/python.exe",
+      "runtimeArgs": ["sql-retriever/serve_api.py", "--port", "8000"],
+      "port": 8000
+    }
+  ]
+}
