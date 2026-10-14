@@ -1,0 +1,18 @@
+[
+  {"id": "FQ-01", "name": "고객 기본 정보", "unit": "회원 1행",
+   "sql": "SELECT join_date, age_band FROM app.customer_profile LIMIT 200"},
+  {"id": "FQ-02", "name": "보유 카드 목록", "unit": "카드 1장당 1행",
+   "sql": "SELECT card_ref, product_name, brand, issue_date, current_status, annual_fee FROM app.customer_cards ORDER BY card_ref LIMIT 200"},
+  {"id": "FQ-03", "name": "카드별 월 사용액(최근 6개월)", "unit": "카드 x 월 1행",
+   "sql": "SELECT card_ref, month, period_start, period_end, approved_amount, transaction_count FROM app.monthly_usage ORDER BY month, card_ref LIMIT 200"},
+  {"id": "FQ-04", "name": "월 사용액 합계(최근 6개월, 전체 카드)", "unit": "월 1행",
+   "sql": "SELECT month, sum(approved_amount)::bigint AS approved_amount, sum(transaction_count)::integer AS transaction_count FROM app.monthly_usage GROUP BY month ORDER BY month LIMIT 200"},
+  {"id": "FQ-05", "name": "업종별 사용액(최근 6개월)", "unit": "업종 1행",
+   "sql": "SELECT category, sum(approved_amount)::bigint AS approved_amount, sum(transaction_count)::integer AS transaction_count FROM app.merchant_usage GROUP BY category ORDER BY approved_amount DESC LIMIT 200"},
+  {"id": "FQ-06", "name": "최근 연체 현황", "unit": "회원 1행",
+   "sql": "SELECT base_month, as_of_date, overdue_amount, overdue_days, overdue_count_12m FROM app.customer_delinquency LIMIT 200"},
+  {"id": "FQ-07", "name": "연체 이력(최근 12개월)", "unit": "월 1행",
+   "sql": "SELECT base_month, as_of_date, overdue_amount, overdue_days, overdue_count_12m FROM app.customer_delinquency_history ORDER BY base_month LIMIT 200"},
+  {"id": "FQ-08", "name": "일별 사용액(최근 90일)", "unit": "일 1행",
+   "sql": "SELECT usage_date, approved_amount, transaction_count FROM app.customer_daily_usage ORDER BY usage_date LIMIT 200"}
+]
