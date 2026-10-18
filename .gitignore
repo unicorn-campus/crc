@@ -38,4 +38,4 @@ hybrid-ai-lab/vector/data/
 temp/*/out/
 
 # SQL 검색기 실행 시 생기는 감사 로그
-sql-retriever/logs/
+retriever/sql-retriever/logs/

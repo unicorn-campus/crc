@@ -1,18 +1,77 @@
-[
-  {"id": "FQ-01", "name": "고객 기본 정보", "unit": "회원 1행",
-   "sql": "SELECT join_date, age_band FROM app.customer_profile LIMIT 200"},
-  {"id": "FQ-02", "name": "보유 카드 목록", "unit": "카드 1장당 1행",
-   "sql": "SELECT card_ref, product_name, brand, issue_date, current_status, annual_fee FROM app.customer_cards ORDER BY card_ref LIMIT 200"},
-  {"id": "FQ-03", "name": "카드별 월 사용액(최근 6개월)", "unit": "카드 x 월 1행",
-   "sql": "SELECT card_ref, month, period_start, period_end, approved_amount, transaction_count FROM app.monthly_usage ORDER BY month, card_ref LIMIT 200"},
-  {"id": "FQ-04", "name": "월 사용액 합계(최근 6개월, 전체 카드)", "unit": "월 1행",
-   "sql": "SELECT month, sum(approved_amount)::bigint AS approved_amount, sum(transaction_count)::integer AS transaction_count FROM app.monthly_usage GROUP BY month ORDER BY month LIMIT 200"},
-  {"id": "FQ-05", "name": "업종별 사용액(최근 6개월)", "unit": "업종 1행",
-   "sql": "SELECT category, sum(approved_amount)::bigint AS approved_amount, sum(transaction_count)::integer AS transaction_count FROM app.merchant_usage GROUP BY category ORDER BY approved_amount DESC LIMIT 200"},
-  {"id": "FQ-06", "name": "최근 연체 현황", "unit": "회원 1행",
-   "sql": "SELECT base_month, as_of_date, overdue_amount, overdue_days, overdue_count_12m FROM app.customer_delinquency LIMIT 200"},
-  {"id": "FQ-07", "name": "연체 이력(최근 12개월)", "unit": "월 1행",
-   "sql": "SELECT base_month, as_of_date, overdue_amount, overdue_days, overdue_count_12m FROM app.customer_delinquency_history ORDER BY base_month LIMIT 200"},
-  {"id": "FQ-08", "name": "일별 사용액(최근 90일)", "unit": "일 1행",
-   "sql": "SELECT usage_date, approved_amount, transaction_count FROM app.customer_daily_usage ORDER BY usage_date LIMIT 200"}
-]
+{
+  "note": "정형쿼리 후보. NL2SQL 실행 계정(sql_retriever_user) 권한으로 EXPLAIN만 수행해 문법과 권한을 확인함. 회원 범위는 RLS와 세션 변수가 정하므로 SQL에 회원 조건을 쓰지 않음.",
+  "queries": [
+    {
+      "id": "FQ-01",
+      "name": "고객 기본정보",
+      "description": "가입일과 연령대",
+      "result_unit": "고객 1행",
+      "sql": "SELECT join_date, age_band FROM app.customer_profile",
+      "explain": "ok"
+    },
+    {
+      "id": "FQ-02",
+      "name": "보유 카드 목록",
+      "description": "기준일 현재 보유 카드와 상품, 연회비",
+      "result_unit": "카드 1장당 1행",
+      "sql": "SELECT card_ref, product_name, brand, issue_date, current_status, annual_fee FROM app.customer_cards ORDER BY card_ref",
+      "explain": "ok"
+    },
+    {
+      "id": "FQ-03",
+      "name": "카드별 월 이용금액",
+      "description": "최근 6개월 카드별 승인 이용금액과 건수",
+      "result_unit": "카드와 월 1쌍당 1행",
+      "sql": "SELECT card_ref, month, approved_amount, transaction_count FROM app.monthly_usage ORDER BY month, card_ref",
+      "explain": "ok"
+    },
+    {
+      "id": "FQ-04",
+      "name": "월별 이용금액 합계",
+      "description": "최근 6개월 모든 카드를 합친 월별 승인 이용금액과 건수",
+      "result_unit": "월 1개당 1행",
+      "sql": "SELECT month, sum(approved_amount)::bigint AS approved_amount, sum(transaction_count)::integer AS transaction_count FROM app.monthly_usage GROUP BY month ORDER BY month",
+      "explain": "ok"
+    },
+    {
+      "id": "FQ-05",
+      "name": "최근 연체 현황",
+      "description": "기준일 이전에 마감된 월 가운데 가장 최근 연체 정보",
+      "result_unit": "고객 0행 또는 1행",
+      "sql": "SELECT base_month, as_of_date, overdue_amount, overdue_days, overdue_count_12m FROM app.customer_delinquency",
+      "explain": "ok"
+    },
+    {
+      "id": "FQ-06",
+      "name": "연체 이력",
+      "description": "최근 마감 월부터 12개월 연체 이력",
+      "result_unit": "월 1개당 1행(최대 12행)",
+      "sql": "SELECT base_month, as_of_date, overdue_amount, overdue_days, overdue_count_12m FROM app.customer_delinquency_history ORDER BY base_month",
+      "explain": "ok"
+    },
+    {
+      "id": "FQ-07",
+      "name": "일별 이용금액",
+      "description": "최근 90일 일별 승인 이용금액과 건수",
+      "result_unit": "날짜 1일당 1행(최대 90행)",
+      "sql": "SELECT usage_date, approved_amount, transaction_count FROM app.customer_daily_usage ORDER BY usage_date",
+      "explain": "ok"
+    },
+    {
+      "id": "FQ-08",
+      "name": "업종별 이용금액",
+      "description": "최근 6개월 업종별 승인 이용금액과 건수",
+      "result_unit": "업종 1개당 1행",
+      "sql": "SELECT category, sum(approved_amount)::bigint AS approved_amount, sum(transaction_count)::integer AS transaction_count FROM app.merchant_usage GROUP BY category ORDER BY approved_amount DESC",
+      "explain": "ok"
+    },
+    {
+      "id": "FQ-09",
+      "name": "가맹점 이용 상위 10곳",
+      "description": "최근 6개월 승인 이용금액이 큰 가맹점 10곳",
+      "result_unit": "가맹점 1곳당 1행(최대 10행)",
+      "sql": "SELECT merchant_name, category, sum(approved_amount)::bigint AS approved_amount, sum(transaction_count)::integer AS transaction_count FROM app.merchant_usage GROUP BY merchant_name, category ORDER BY approved_amount DESC LIMIT 10",
+      "explain": "ok"
+    }
+  ]
+}

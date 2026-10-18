@@ -169,7 +169,7 @@
 | 질문 | 사용자 답 |
 |------|-----------|
 | 설계서 폴더 | `design/sql-retriever` |
-| 출력 기준 폴더 | `sql-retriever` |
+| 출력 기준 폴더 | `sql-retriever` (2026-10-15 `retriever/sql-retriever`로 이동) |
 | 비밀값 위치 | `secrets/.env` (사용자가 직접 만듦) |
 | 정형쿼리 SQL 전문 | 설계서 스크립트의 부록 B만 읽기 |
 | 허용 컬럼 출처 | `db_catalog.json` 읽기 |

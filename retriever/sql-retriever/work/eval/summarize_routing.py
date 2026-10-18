@@ -1,6 +1,6 @@
 """routing_run_log.jsonl을 읽어 보고서용 마크다운 표를 출력함(1회성 평가 스크립트).
 
-실행: sql-retriever 폴더에서 `.venv/Scripts/python work/eval/summarize_routing.py [--pass-label p1]`
+실행: retriever/sql-retriever 폴더에서 `.venv/Scripts/python work/eval/summarize_routing.py [--pass-label p1]`
 같은 pass에 같은 질문 결과가 여럿이면(429 재시도) 마지막 결과 1개만 셈.
 """
 

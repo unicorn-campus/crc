@@ -70,7 +70,7 @@ flowchart LR
 
 ## 4. 디렉토리 구조
 ```
-sql-retriever/
+retriever/sql-retriever/
 ├─ app/
 │  ├─ domain/            업무 규칙(외부 기술 없음): 시간 예산, 요청 검사, 식별자 가림, 허용 뷰, 정형쿼리, 기간, 안내 문장
 │  ├─ application/
@@ -92,7 +92,7 @@ sql-retriever/
 ```
 
 ## 5. 가상환경 설정
-Python 3.13 기준임. 명령은 모두 `sql-retriever` 폴더에서 실행함
+Python 3.13 기준임. 명령은 모두 `retriever/sql-retriever` 폴더에서 실행함
 
 ### 5.1 Windows + Git Bash
 ```bash
@@ -130,7 +130,7 @@ pip install -r requirements.txt
 - Mac에서도 PowerShell(`pwsh`)을 쓰면 활성화 명령은 `./.venv/bin/Activate.ps1`임
 
 ## 6. `.env` 설정
-- 위치: 저장소 루트의 `secrets/.env` (즉 `sql-retriever/../secrets/.env`). 다른 곳이면 `SQL_RETRIEVER_ENV_FILE`에 경로를 줌
+- 위치: 저장소 루트의 `secrets/.env` (즉 `retriever/sql-retriever/../../secrets/.env`). 다른 곳이면 `SQL_RETRIEVER_ENV_FILE`에 경로를 줌
 - 같은 이름이 환경변수에도 있으면 환경변수 값이 이김
 - 값은 이 문서에 적지 않음. 파일은 Git에 올리지 않음(`.gitignore`가 `.env`를 막음)
 

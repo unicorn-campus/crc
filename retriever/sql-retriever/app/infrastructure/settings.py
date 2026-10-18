@@ -8,9 +8,9 @@ from pathlib import Path
 
 from dotenv import dotenv_values
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]  # sql-retriever 폴더
+PROJECT_ROOT = Path(__file__).resolve().parents[2]  # retriever/sql-retriever 폴더
 # 비밀값 파일 기본 위치: 저장소 루트의 secrets/.env. SQL_RETRIEVER_ENV_FILE로 바꿀 수 있음
-DEFAULT_ENV_FILE = PROJECT_ROOT.parent / "secrets" / ".env"
+DEFAULT_ENV_FILE = PROJECT_ROOT.parents[1] / "secrets" / ".env"  # retriever/ 한 단계 위가 저장소 루트
 
 # C-01 연결 정보(24장). 접속 주소는 설계서 값이며 실행 설정으로 바꾸지 않음
 GROQ_BASE_URL = "https://api.groq.com/openai/v1"

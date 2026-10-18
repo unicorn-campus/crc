@@ -1,7 +1,7 @@
 """평가 로그의 계획을 S-R3 기간 판정과 S-R4 SQL 검사에 오프라인으로 넣어 봄(1회성 평가 스크립트, DB·LLM 호출 없음).
 
 route를 잘못 골라도 결과가 같으면 괜찮은지, 아니면 사용자 답이 달라지는지 보려는 것.
-실행: sql-retriever 폴더에서 `.venv/Scripts/python work/eval/check_downstream.py [--pass-label p1]`
+실행: retriever/sql-retriever 폴더에서 `.venv/Scripts/python work/eval/check_downstream.py [--pass-label p1]`
 """
 
 from __future__ import annotations

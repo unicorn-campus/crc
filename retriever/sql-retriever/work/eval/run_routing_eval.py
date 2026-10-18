@@ -1,6 +1,6 @@
 """C-01 route 판정 평가 실행기(1회성 평가 스크립트). 실제 Groq로 평가셋 질문을 1개씩 보내고 결과를 JSONL로 남김.
 
-실행: sql-retriever 폴더에서 `.venv/Scripts/python work/eval/run_routing_eval.py [--resume] [--only F05-1,N-01] [--pass-label p2]`
+실행: retriever/sql-retriever 폴더에서 `.venv/Scripts/python work/eval/run_routing_eval.py [--resume] [--only F05-1,N-01] [--pass-label p2]`
 - 시스템 프롬프트와 C-01 코드는 그대로 씀(bootstrap.create_planner). 평가용으로 고친 곳 없음
 - 호출 사이를 21초 이상 띄움. 대기는 시간 측정 밖에서 함(Groq 분당 토큰 한도, 위험 R-03)
 - 비밀값은 load_settings로만 읽고 출력하지 않음
@@ -16,7 +16,7 @@ import time
 from datetime import date, datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]  # sql-retriever 폴더
+ROOT = Path(__file__).resolve().parents[2]  # retriever/sql-retriever 폴더
 sys.path.insert(0, str(ROOT))
 
 from app.application.models import PlannerFailure, PlanRequest  # noqa: E402
